@@ -1,0 +1,227 @@
+/* global styles */
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto Mono', monospace;
+    user-select: none;
+}
+
+:root {
+    --cellWidth: 1.6rem;
+    --cellHeight: 1.6rem;
+    --headWidth: 2.8rem;
+    --headHeight: 2.5rem;
+    --tableRadius:4px;
+    --headBackColor: rgb(124, 144, 195,.75);
+    --cellBackColor: rgb(132, 144, 179,.5);
+    --cellHighlight: rgba(172, 255, 47, 0.75);
+    --cellSelect: teal;
+    background-color: lightgray;
+
+}
+
+.invisible.invisible {
+    display: none;
+}
+
+
+/* menuPanel */
+.menuPanel{
+    display: flex;
+    align-items: center;
+    height: 3rem;
+    color: gray;
+}
+
+.menuPanel div {
+    padding: 1rem;
+}
+
+.menuPanel div:hover {
+    color: red;
+    cursor: pointer;
+}
+
+
+/* tablesPanel */
+.tablesPanel{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 2rem 1rem 0;
+    gap: 1rem;
+}
+
+.practiceSettings{
+    width: max-content;
+}
+
+.tablesEditor{
+    /* border-collapse: collapse; */
+    border-spacing: 1px;
+    cursor: pointer;
+}
+
+/* td, th{border-radius:var(--tableRadius);
+    border-width: 2px; border-color: black;
+}
+
+tr:first-child :first-child {border-top-left-radius: var(--tableRadius)}
+
+th:last-child{border-top-right-radius: var(--tableRadius)}
+
+tr:last-child th:first-child{border-bottom-left-radius: var(--tableRadius)}
+
+tr:last-child td:last-child{border-bottom-right-radius:var(--tableRadius)} */
+
+.tablesEditor th, .tablesEditor td{
+    background-color: var(--cellBackColor);
+    text-align: center;
+    /* font-size:  1.2rem; */
+    width:      var(--cellWidth);
+    height:     var(--cellHeight);
+}
+
+.tablesEditor th {
+    background-color: var(--headBackColor);
+}
+
+.tablesEditor tr :first-child {
+    width:      var(--headWidth);
+}
+
+.tablesEditor :first-child > th {
+    height:     var(--headHeight);
+}
+
+.tablesEditor tr:last-child {
+    height: calc(var(--cellHeight) + 2rem);
+}
+
+.tablesEditor tr:last-child>td :first- {
+    position: relative;
+    bottom: 2rem;
+}
+
+.tablesEditor :last-child:is(th,td) {
+    width: calc(var(--cellWidth) + .5rem);
+}
+
+/* .tablesEditor :not(:first-child) th:hover ~ td,  */
+/* .tablesEditor :not(:first-child) th:hover{
+    background-color: var(--cellHighlight);
+} */
+
+.multiplicationSelect.multiplicationSelect {
+    /* background-color: var(--cellSelect) */
+    color: red;
+    font-weight: bold;
+}
+
+.multiplicationHighlight.multiplicationHighlight {
+    background-color: var(--cellHighlight);
+}
+
+
+/* multiplicationPanel */
+.modal-wrapper{
+    position:absolute;
+    top:0;
+    left: 0;
+    display: flex;
+    height: 100vh;
+    /* height: 100%; */
+    /* min-width: 100%; */
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    align-items: center;
+    justify-content: center;
+}
+
+.modal{
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 2rem;
+    align-content: space-around;
+    justify-content: end;
+    height: clamp(8rem, 20vh, 24rem);
+    background-color: white;
+    padding: 1rem;
+    border-radius: 15px;
+    flex-basis:0;
+    font-size: larger;
+    width: 90%;
+}
+
+.modal>p { 
+    width: max-content;
+}
+
+.modal>button{
+    font-size: inherit;
+    padding: .25rem 1rem;
+}
+
+.multiplicationPanel{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.display{
+    display: flex;
+    align-items: center;
+    height: 8rem;
+    font-size: 3rem;
+    /* transition: 500ms ease-in-out */
+}
+
+.correctAnswer{
+    color: rgb(44, 178, 0);
+    /* font-weight: bold; */
+    transition: 400ms ease-in-out;
+}
+
+.incorrectAnswer{
+    color: red;
+    /* font-weight: bold; */
+    transition: 400ms ease-in-out;
+}
+
+
+#displayFactorA, #displayFactorB, #displayProduct{
+    width: 4rem;
+    text-align: center;
+}
+
+#displayProduct{
+    width: 5rem;
+}
+.keyboard{
+    display: grid;
+    width: 16rem;
+    height: 16rem;
+    grid-template: 1fr 1fr 1fr 1fr / 1fr 1fr 1fr 1fr ;
+}
+
+#backspace, #enter{
+    grid-row: span 2;
+    font-size: 1 rem;
+}
+
+#zero{
+    grid-column: 1/4;
+    /* grid-column: span3; */
+    /* grid-column-start: 1;
+    grid-column-end: 4; */
+}
+
+.arrow{
+    font-weight: bolder;
+    font-size: 180%;
+}
+
+.numberKeys{
+    font-size: 1.2rem;
+}

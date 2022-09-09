@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta  charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
+    <title>Practica Multiplicaciones</title>
+    <link rel="stylesheet" href="style.css">
+    <script defer src="script.js"></script>
+</head>
+
+<body>
+    <div class="menuPanel">
+        <div class="edit">Edit</div>
+        <div class="practice">Practice</div>
+    </div>
+    <div class="modal-wrapper">
+        <div class="modal">
+            <p>Do you want to end the current practice session?</p>
+            <button>YES</button>
+            <button>NO</button> 
+        </div> 
+    </div>
+    <div class="multiplicationPanel">
+        <div class="display">
+            <span id="displayFactorA"></span>
+            <span id="displayTimes">×</span>
+            <span id="displayFactorB"></span>
+            <span id="displayEquals">=</span>
+            <span id="displayProduct"></span>
+        </div>
+        <div class="keyboard">
+            <button class="numberKeys">7</button>
+            <button class="numberKeys">8</button>
+            <button class="numberKeys">9</button>
+            <button id="backspace">BACK</br>SPACE</br><span class="arrow">⟵</span></button>
+            <button class="numberKeys">4</button>
+            <button class="numberKeys">5</button>
+            <button class="numberKeys">6</button>
+            <button class="numberKeys">1</button>
+            <button class="numberKeys">2</button>
+            <button class="numberKeys">3</button>
+            <button id="enter">ENTER </br><span class="arrow">↵</span></button>
+            <button class="numberKeys" id="zero">0</button>
+        </div>
+    </div>
+    <div class="tablesPanel invisible">
+        <div class="practiceSettings">
+            <!-- <input type="checkbox">
+            <label>Random table order</label></br>
+            <input type="checkbox" checked>
+            <label>Random factor B</label></br> -->
+            <input type="checkbox" checked data-random-factors>
+            <label>Random factors</label></br>
+            <input type="checkbox" data-swap-factors>
+            <label>Swap factors Randomly</label></br>
+            <input type="number" value="5" min="10" max="9999" data-playlist-length style="width:3rem ;">
+            <label>Playlist length</label>
+        </div>
+        <table class="tablesEditor">
+            <tbody>
+                <tr>
+                    <th id="allTables">&nbsp;</th>
+                    <th class="factors1" data-link-factors="factors1"></th>
+                    <th class="factors2" data-link-factors="factors2"></th>
+                    <th class="factors3" data-link-factors="factors3"></th>
+                    <th class="factors4" data-link-factors="factors4"></th>
+                    <th class="factors5" data-link-factors="factors5"></th>
+                    <th class="factors6" data-link-factors="factors6"></th>
+                    <th class="factors7" data-link-factors="factors7"></th>
+                    <th class="factors8" data-link-factors="factors8"></th>
+                    <th class="factors9" data-link-factors="factors9"></th>
+                    <th class="factors10" data-link-factors="factors10"></th>
+                </tr>
+                <tr class="table1">
+                    <th>&nbsp1 × </th>
+                    <td class="factors1"  data-table="1">1</td>
+                    <td class="factors2"  data-table="1">2</td>
+                    <td class="factors3"  data-table="1">3</td>
+                    <td class="factors4"  data-table="1">4</td>
+                    <td class="factors5"  data-table="1">5</td>
+                    <td class="factors6"  data-table="1">6</td>
+                    <td class="factors7"  data-table="1">7</td>
+                    <td class="factors8"  data-table="1">8</td>
+                    <td class="factors9"  data-table="1">9</td>
+                    <td class="factors10" data-table="1">10</td>
+                </tr>
+                <tr class="table2">
+                    <th>&nbsp2 × </th>
+                    <td class="factors1"  data-table="2">1</td>
+                    <td class="factors2"  data-table="2">2</td>
+                    <td class="factors3"  data-table="2">3</td>
+                    <td class="factors4"  data-table="2">4</td>
+                    <td class="factors5"  data-table="2">5</td>
+                    <td class="factors6"  data-table="2">6</td>
+                    <td class="factors7"  data-table="2">7</td>
+                    <td class="factors8"  data-table="2">8</td>
+                    <td class="factors9"  data-table="2">9</td>
+                    <td class="factors10" data-table="2">10</td>
+                </tr>
+                <tr class="table3">
+                    <th>&nbsp3 × </th>
+                    <td class="factors1"  data-table="3">1</td>
+                    <td class="factors2"  data-table="3">2</td>
+                    <td class="factors3"  data-table="3">3</td>
+                    <td class="factors4"  data-table="3">4</td>
+                    <td class="factors5"  data-table="3">5</td>
+                    <td class="factors6"  data-table="3">6</td>
+                    <td class="factors7"  data-table="3">7</td>
+                    <td class="factors8"  data-table="3">8</td>
+                    <td class="factors9"  data-table="3">9</td>
+                    <td class="factors10" data-table="3">10</td>
+                </tr>
+                <tr class="table4">
+                    <th>&nbsp4 × </th>
+                    <td class="factors1"  data-table="4">1</td>
+                    <td class="factors2"  data-table="4">2</td>
+                    <td class="factors3"  data-table="4">3</td>
+                    <td class="factors4"  data-table="4">4</td>
+                    <td class="factors5"  data-table="4">5</td>
+                    <td class="factors6"  data-table="4">6</td>
+                    <td class="factors7"  data-table="4">7</td>
+                    <td class="factors8"  data-table="4">8</td>
+                    <td class="factors9"  data-table="4">9</td>
+                    <td class="factors10" data-table="4">10</td>
+                </tr>
+                <tr class="table5">
+                    <th>&nbsp5 × </th>
+                    <td class="factors1"  data-table="5">1</td>
+                    <td class="factors2"  data-table="5">2</td>
+                    <td class="factors3"  data-table="5">3</td>
+                    <td class="factors4"  data-table="5">4</td>
+                    <td class="factors5"  data-table="5">5</td>
+                    <td class="factors6"  data-table="5">6</td>
+                    <td class="factors7"  data-table="5">7</td>
+                    <td class="factors8"  data-table="5">8</td>
+                    <td class="factors9"  data-table="5">9</td>
+                    <td class="factors10" data-table="5">10</td>
+                </tr>
+                <tr class="table6">
+                    <th>&nbsp6 × </th>
+                    <td class="factors1"  data-table="6">1</td>
+                    <td class="factors2"  data-table="6">2</td>
+                    <td class="factors3"  data-table="6">3</td>
+                    <td class="factors4"  data-table="6">4</td>
+                    <td class="factors5"  data-table="6">5</td>
+                    <td class="factors6"  data-table="6">6</td>
+                    <td class="factors7"  data-table="6">7</td>
+                    <td class="factors8"  data-table="6">8</td>
+                    <td class="factors9"  data-table="6">9</td>
+                    <td class="factors10" data-table="6">10</td>
+                </tr>
+                <tr class="table7">
+                    <th>&nbsp7 × </th>
+                    <td class="factors1"  data-table="7">1</td>
+                    <td class="factors2"  data-table="7">2</td>
+                    <td class="factors3"  data-table="7">3</td>
+                    <td class="factors4"  data-table="7">4</td>
+                    <td class="factors5"  data-table="7">5</td>
+                    <td class="factors6"  data-table="7">6</td>
+                    <td class="factors7"  data-table="7">7</td>
+                    <td class="factors8"  data-table="7">8</td>
+                    <td class="factors9"  data-table="7">9</td>
+                    <td class="factors10" data-table="7">10</td>
+                </tr>
+                <tr class="table8">
+                    <th>&nbsp8 × </th>
+                    <td class="factors1"  data-table="8">1</td>
+                    <td class="factors2"  data-table="8">2</td>
+                    <td class="factors3"  data-table="8">3</td>
+                    <td class="factors4"  data-table="8">4</td>
+                    <td class="factors5"  data-table="8">5</td>
+                    <td class="factors6"  data-table="8">6</td>
+                    <td class="factors7"  data-table="8">7</td>
+                    <td class="factors8"  data-table="8">8</td>
+                    <td class="factors9"  data-table="8">9</td>
+                    <td class="factors10" data-table="8">10</td>
+                </tr>
+                <tr class="table9">
+                    <th>&nbsp9 × </th>
+                    <td class="factors1"  data-table="9">1</td>
+                    <td class="factors2"  data-table="9">2</td>
+                    <td class="factors3"  data-table="9">3</td>
+                    <td class="factors4"  data-table="9">4</td>
+                    <td class="factors5"  data-table="9">5</td>
+                    <td class="factors6"  data-table="9">6</td>
+                    <td class="factors7"  data-table="9">7</td>
+                    <td class="factors8"  data-table="9">8</td>
+                    <td class="factors9"  data-table="9">9</td>
+                    <td class="factors10" data-table="9">10</td>
+                </tr>
+                <tr class="table10">
+                    <th>10 × </th>
+                    <td class="factors1"  data-table="10">1</td>
+                    <td class="factors2"  data-table="10">2</td>
+                    <td class="factors3"  data-table="10">3</td>
+                    <td class="factors4"  data-table="10">4</td>
+                    <td class="factors5"  data-table="10">5</td>
+                    <td class="factors6"  data-table="10">6</td>
+                    <td class="factors7"  data-table="10">7</td>
+                    <td class="factors8"  data-table="10">8</td>
+                    <td class="factors9"  data-table="10">9</td>
+                    <td class="factors10" data-table="10">10</td>
+                </tr>
+            </tbody> 
+        </table>
+    </div>
+</body>
+</html>
+
