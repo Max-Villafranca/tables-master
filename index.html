@@ -20,12 +20,19 @@
         </div> 
     </div>
     <div class="multiplicationPanel">
-        <div class="display">
+        <div class="display ">
             <span id="displayFactorA"></span>
             <span id="displayTimes">×</span>
             <span id="displayFactorB"></span>
             <span id="displayEquals">=</span>
             <span id="displayProduct"></span>
+        </div>
+        <div class="results invisible">
+            <div class="stats">
+                <span id="times-responded">36</span> responses</br>
+                in <span id="minutes-practiced">22</span> min
+            </div>
+            <div class="score"></div>
         </div>
         <div class="keyboard">
             <button class="numberKeys">7</button>
@@ -44,10 +51,6 @@
     </div>
     <div class="tablesPanel invisible">
         <div class="practiceSettings">
-            <!-- <input type="checkbox">
-            <label>Random table order</label></br>
-            <input type="checkbox" checked>
-            <label>Random factor B</label></br> -->
             <input type="checkbox" checked data-random-factors>
             <label>Random factors</label></br>
             <input type="checkbox" data-swap-factors>

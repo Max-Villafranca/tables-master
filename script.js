@@ -5,7 +5,12 @@ class PracticeSession {
     #tablesGenerated = []
     #factorsGenerated =[]
     constructor (tables, settings) {
+        this.startTime = performance.now()
         this.display = document.querySelector('.display')
+        this.score = document.querySelector('.score')
+        this.timesResponded = document.querySelector('#times-responded')
+        this.minutesPracticed = document.querySelector('#minutes-practiced')
+        this.results = document.querySelector('.results')
         this.displayFactorA = document.querySelector('#displayFactorA')
         this.displayFactorB = document.querySelector('#displayFactorB')
         this.displayProduct = document.querySelector('#displayProduct')
@@ -131,6 +136,7 @@ class PracticeSession {
     }
     
     displayResults () {
+        this.#expectingInput = false
         const score = Math.round(this.#correctAnswers/this.settings.playlistProgress*1000)/10
         let message =
         console.log(`Your Score is: ${score}%`)
@@ -138,8 +144,11 @@ class PracticeSession {
         if (score > 50 && score < 80) message ='😅 ❗'
         if (score >= 80 && score < 95) message ='😎 ✔️'
         if (score >= 95) message ='🥇 😃 🏆 '
-        this.display.textContent = `${score}% ${message}`
-        this.#expectingInput = false
+        this.timesResponded.textContent = this.settings.playlistProgress
+        this.minutesPracticed.textContent = Math.round((performance.now() - this.startTime)/10000)
+        this.score.textContent = `${score}% ${message}`
+        this.display.classList.add('invisible')
+        this.results.classList.remove('invisible')
     }
 
     updateSaveScore (ans) {
