@@ -251,14 +251,14 @@ function toggleCheckbox (e) {
     settings[Object.keys(e.target.dataset)[0]] = e.target.checked
 }
 
-function showTablesPanel () {
-    tablesPanel.classList.remove('invisible')
-    multiplicationPanel.classList.add('invisible')
+function showEditPanel () {
+    editPanel.classList.remove('invisible')
+    practicePanel.classList.add('invisible')
 }
 
-function showMultiplicationPanel () {
-    tablesPanel.classList.add('invisible')
-    multiplicationPanel.classList.remove('invisible')
+function showPracticePanel () {
+    editPanel.classList.add('invisible')
+    practicePanel.classList.remove('invisible')
 }
 
 // variables
@@ -266,8 +266,8 @@ const columnHeads = document.querySelectorAll('.tablesEditor tr:first-child>th:n
 const rowHeads = document.querySelectorAll('.tablesEditor :not(:first-child) th')
 const singleCell = document.querySelectorAll('.tablesEditor td')
 const allCells = document.querySelector('#allTables')
-const tablesPanel = document.querySelector('.tablesPanel')
-const multiplicationPanel = document.querySelector('.multiplicationPanel')
+const editPanel = document.querySelector('.editPanel')
+const practicePanel = document.querySelector('.practicePanel')
 let randomFactors= document.querySelector('[data-random-factors]')
 let swapFactors = document.querySelector('[data-swap-factors]')
 let playlistLength = document.querySelector('[data-playlist-length]')
@@ -294,15 +294,15 @@ let settings = {
 const multiplications = new PracticeSession(multiplicationTables, settings)
 
 document.querySelector('.practice').addEventListener('click', () => {
-    if (!multiplicationPanel.classList.contains('invisible')) return
-    showMultiplicationPanel()
+    if (!practicePanel.classList.contains('invisible')) return
+    showPracticePanel()
     debugger; multiplications.play()
 })
 
 document.querySelector('.edit').addEventListener('click', () => {
-    if (!tablesPanel.classList.contains('invisible')) return
+    if (!editPanel.classList.contains('invisible')) return
     if (multiplications.settings.playlistProgress === 0) {
-        showTablesPanel()
+        showEditPanel()
     } else {
         document.querySelector('.modal-wrapper').classList.remove('invisible')
     }
@@ -312,7 +312,7 @@ document.querySelector('#yes-endPractice').addEventListener('click', () =>{
     document.querySelector('.modal-wrapper').classList.add('invisible')
     multiplications.displayResults()
     setTimeout(() => {
-        showTablesPanel ()
+        showEditPanel ()
     }, 3000);
 })
 
