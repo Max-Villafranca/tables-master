@@ -143,7 +143,7 @@ class PracticeSession {
         if (score >= 80 && score < 95) message ='😎 ✔️'
         if (score >= 95) message ='🥇 😃 🏆 '
         this.timesResponded.textContent = this.settings.playlistProgress
-        this.minutesPracticed.textContent = Math.round((performance.now() - this.startTime)/10000)
+        this.minutesPracticed.textContent = Math.round((performance.now() - this.startTime)/1000/60)
         this.score.textContent = `${score}% ${message}`
         this.display.classList.add('invisible')
         this.results.classList.remove('invisible')
