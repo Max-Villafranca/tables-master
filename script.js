@@ -8,6 +8,7 @@ class PracticeSession {
         this.startTime = performance.now()
         this.display = document.querySelector('.display')
         this.score = document.querySelector('.score')
+        this.keyboard = document.querySelector('.keyboard')
         this.timesResponded = document.querySelector('#times-responded')
         this.minutesPracticed = document.querySelector('#minutes-practiced')
         this.results = document.querySelector('.results')
@@ -18,6 +19,7 @@ class PracticeSession {
         this.tables = this.sortTables(tables)
         this.results.classList.add('invisible')
         this.display.classList.remove('invisible')
+        this.keyboard.classList.remove('invisible')
     }
 
     play () {
@@ -146,6 +148,7 @@ class PracticeSession {
         this.minutesPracticed.textContent = Math.round((performance.now() - this.startTime)/1000/60)
         this.score.textContent = `${score}% ${message}`
         this.display.classList.add('invisible')
+        this.keyboard.classList.add('invisible')
         this.results.classList.remove('invisible')
     }
 

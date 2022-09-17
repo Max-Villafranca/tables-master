@@ -212,9 +212,6 @@ tr:last-child td:last-child{border-bottom-right-radius:var(--tableRadius)} */
 
 #zero{
     grid-column: 1/4;
-    /* grid-column: span3; */
-    /* grid-column-start: 1;
-    grid-column-end: 4; */
 }
 
 .arrow{
@@ -224,4 +221,42 @@ tr:last-child td:last-child{border-bottom-right-radius:var(--tableRadius)} */
 
 .numberKeys{
     font-size: 1.2rem;
+}
+
+.results{
+    width: 20rem;
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 2rem;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.stats{
+    width: 6rem;
+    font-size: smaller;
+}
+
+.score{
+    height: 4rem;
+    width: 14rem;
+    display: flex;
+    align-items: center;
+    padding: .5rem;
+    font-size: x-large;
+    justify-content: flex-end;
+}
+
+#restartPractice{
+    margin: 0 auto;
+    /* align-self: flex-start; */
+    min-width: 6rem;
+    flex-grow: 0;
+    padding: .5rem;
+
+}
+
+#restartSymbol{
+    font-weight: bolder;
+    font-size: x-large;
 }
