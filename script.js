@@ -16,10 +16,8 @@ class PracticeSession {
         this.displayProduct = document.querySelector('#displayProduct')
         this.settings = settings
         this.tables = this.sortTables(tables)
-        document.querySelectorAll('.numberKeys').forEach(button => {
-            button.addEventListener('click', this.appendNumber.bind(this))})
-        document.querySelector('#backspace').addEventListener('click', this.backspace.bind(this))
-        document.querySelector('#enter').addEventListener('click', this.checkAnswer.bind(this))
+        this.results.classList.add('invisible')
+        this.display.classList.remove('invisible')
     }
 
     play () {
@@ -212,7 +210,8 @@ function getSettings () {
     return {
         randomFactors:document.querySelector('[data-random-factors]').checked,
         swapFactors: document.querySelector('[data-swap-factors]').checked ,
-        playlistLength: parseInt(document.querySelector('[data-playlist-length]').value)
+        playlistLength: parseInt(document.querySelector('[data-playlist-length]').value),
+        playlistProgress: 0
         }
 }
 
@@ -245,10 +244,6 @@ function enableSelectTables() {
     singleCell.forEach(i => { i.addEventListener('click', selectSingleCell) })
 
     allCells.addEventListener('click', selectAllCells)
-}
-
-function toggleCheckbox (e) {
-    settings[Object.keys(e.target.dataset)[0]] = e.target.checked
 }
 
 function showEditPanel () {
@@ -285,23 +280,25 @@ let multiplicationTables = {
     9:[0,0,0,0,0,0,0,0,0,0],
     10:[0,0,0,0,0,0,0,0,0,0]
     } 
-let settings = {
-    randomFactors: randomFactors.checked,
-    swapFactors: swapFactors.checked,
-    playlistLength: parseInt(playlistLength.value),
-    playlistProgress: 0
-}
-const multiplications = new PracticeSession(multiplicationTables, settings)
+let multiplications = new PracticeSession(multiplicationTables, getSettings())
+
+document.querySelectorAll('.numberKeys').forEach(button => {
+    button.addEventListener('click', (e) => {multiplications.appendNumber(e)})})
+document.querySelector('#backspace').addEventListener('click', (e) => {multiplications.backspace(e)})
+document.querySelector('#enter').addEventListener('click', (e) => {multiplications.checkAnswer(e)})
+
 
 document.querySelector('.practice').addEventListener('click', () => {
     if (!practicePanel.classList.contains('invisible')) return
+    multiplications = new PracticeSession (multiplicationTables, getSettings())
+    multiplications.play()
     showPracticePanel()
-    debugger; multiplications.play()
 })
 
 document.querySelector('.edit').addEventListener('click', () => {
     if (!editPanel.classList.contains('invisible')) return
     if (multiplications.settings.playlistProgress === 0) {
+        multiplications = null
         showEditPanel()
     } else {
         document.querySelector('.modal-wrapper').classList.remove('invisible')
@@ -311,6 +308,7 @@ document.querySelector('.edit').addEventListener('click', () => {
 document.querySelector('#yes-endPractice').addEventListener('click', () =>{
     document.querySelector('.modal-wrapper').classList.add('invisible')
     multiplications.displayResults()
+    multiplications = null
     setTimeout(() => {
         showEditPanel ()
     }, 3000);
@@ -320,9 +318,6 @@ document.querySelector('#no-endPractice').addEventListener('click', () =>{
     document.querySelector('.modal-wrapper').classList.add('invisible')
 })
 
-randomFactors.addEventListener('change', toggleCheckbox)
-swapFactors.addEventListener('change', toggleCheckbox)
-playlistLength.addEventListener('change', e => settings.playlistLength = parseInt(e.target.value))
 
 multiplications.play()
 enableHighlightTables()
