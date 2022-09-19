@@ -1,4 +1,5 @@
 class PracticeSession {
+    #sessionEnded = false
     #correctAnswers = 0
     #currentTableCompleted = true
     #expectingInput = false
@@ -135,7 +136,7 @@ class PracticeSession {
         return {a, b};
     }
     
-    displayResults () {
+    displayResults (showRestartButton = true) {
         this.#expectingInput = false
         const score = Math.round(this.#correctAnswers/this.settings.playlistProgress*1000)/10
         let message =
@@ -149,7 +150,10 @@ class PracticeSession {
         this.score.textContent = `${score}% ${message}`
         this.display.classList.add('invisible')
         this.keyboard.classList.add('invisible')
+        restartPracticeButton.classList.remove('invisible')
+        if (!showRestartButton)restartPracticeButton.classList.add('invisible')
         this.results.classList.remove('invisible')
+        this.#sessionEnded = true
     }
 
     updateSaveScore (ans) {
@@ -158,6 +162,10 @@ class PracticeSession {
         // const wrong = localStorage.getItem('wrong') ?? 0
         // if (ans===1) localStorage.setItem('right',`${parseInt(right)+1}`)
         // if (ans===0) localStorage.setItem('wrong',`${parseInt(wrong)+1}`)
+    }
+
+    sessionCompleted () {
+        return this.#sessionEnded
     }
 }
 
@@ -265,6 +273,7 @@ const rowHeads = document.querySelectorAll('.tablesEditor :not(:first-child) th'
 const singleCell = document.querySelectorAll('.tablesEditor td')
 const allCells = document.querySelector('#allTables')
 const editPanel = document.querySelector('.editPanel')
+const restartPracticeButton = document.querySelector('#restartPractice')
 const practicePanel = document.querySelector('.practicePanel')
 let randomFactors= document.querySelector('[data-random-factors]')
 let swapFactors = document.querySelector('[data-swap-factors]')
@@ -299,7 +308,8 @@ document.querySelector('.practice').addEventListener('click', () => {
 })
 
 document.querySelector('.edit').addEventListener('click', () => {
-    if (!editPanel.classList.contains('invisible')) return
+    if (multiplications === null || !editPanel.classList.contains('invisible')) return
+    if (multiplications.sessionCompleted()) {showEditPanel(); return}
     if (multiplications.settings.playlistProgress === 0) {
         multiplications = null
         showEditPanel()
@@ -310,7 +320,7 @@ document.querySelector('.edit').addEventListener('click', () => {
 
 document.querySelector('#yes-endPractice').addEventListener('click', () =>{
     document.querySelector('.modal-wrapper').classList.add('invisible')
-    multiplications.displayResults()
+    multiplications.displayResults(false)
     multiplications = null
     setTimeout(() => {
         showEditPanel ()
@@ -321,6 +331,11 @@ document.querySelector('#no-endPractice').addEventListener('click', () =>{
     document.querySelector('.modal-wrapper').classList.add('invisible')
 })
 
+restartPracticeButton.addEventListener('click', () => {
+    multiplications = null
+    multiplications = new PracticeSession (multiplicationTables, getSettings())
+    multiplications.play()
+})
 
 multiplications.play()
 enableHighlightTables()
