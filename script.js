@@ -65,25 +65,20 @@ class PracticeSession {
     }
 
     sortTables (t) {
-        let sortedTables = {...t}
-        for (let i = 0; i < sortedTables.tables.length; i++) {
-            let factorA = sortedTables.tables
+    let sortedTables = { tables:[] }
+
+        for (let i = 0; i < t.tables.length; i++) {
+            let factorA = t.tables
             let tempArray = []
-            for (let j = 0; j < sortedTables[factorA[i]].length; j++) {
-                let factorB = sortedTables[factorA[i]]
-                if (factorB) {
-                    tempArray.push(j+1)
-                }
+            for (let j = 0; j < t[factorA[i]].length; j++) {
+                let factorB = t[factorA[i]]
+                if (factorB[j]) tempArray.push(j+1)
             }
-            if (tempArray.length === 0) {
-                sortedTables.tables = sortedTables.tables.splice[i]
-                delete sortedTables[i+1]
-            }
-            else { 
-                sortedTables[factorA[i]] = tempArray
+            if (tempArray.length > 0) {
+                sortedTables.tables.push(i+1) 
+                sortedTables[i+1] = tempArray
                 tempArray = []
             }
-            
         }
         return sortedTables
     }
@@ -200,7 +195,8 @@ function selectRow(e) {
 }
 
 function selectSingleCell(e) {
-    togglemultiplicationSelect
+    toggleSelected(e.target)
+    e.target.classList.toggle('multiplicationSelect')
 }
 
 function selectAllCells() {
@@ -292,6 +288,7 @@ let multiplicationTables = {
     9:[0,0,0,0,0,0,0,0,0,0],
     10:[0,0,0,0,0,0,0,0,0,0]
     } 
+selectAllCells()
 let multiplications = new PracticeSession(multiplicationTables, getSettings())
 
 document.querySelectorAll('.numberKeys').forEach(button => {
@@ -303,6 +300,7 @@ document.querySelector('#enter').addEventListener('click', (e) => {multiplicatio
 document.querySelector('.practice').addEventListener('click', () => {
     if (!practicePanel.classList.contains('invisible')) return
     multiplications = new PracticeSession (multiplicationTables, getSettings())
+    if (multiplications.tables.tables.length === 0) return
     multiplications.play()
     showPracticePanel()
 })
@@ -311,6 +309,7 @@ document.querySelector('.edit').addEventListener('click', () => {
     if (multiplications === null || !editPanel.classList.contains('invisible')) return
     if (multiplications.sessionCompleted()) {showEditPanel(); return}
     if (multiplications.settings.playlistProgress === 0) {
+        multiplicationTables.tables = [1,2,3,4,5,6,7,8,9,10]
         multiplications = null
         showEditPanel()
     } else {
