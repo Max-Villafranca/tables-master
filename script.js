@@ -66,9 +66,9 @@ class PracticeSession {
 
     sortTables (t) {
     let sortedTables = { tables:[] }
+    let factorA = Object.keys(t)
 
-        for (let i = 0; i < t.tables.length; i++) {
-            let factorA = t.tables
+        for (let i = 0; i < factorA.length; i++) {
             let tempArray = []
             for (let j = 0; j < t[factorA[i]].length; j++) {
                 let factorB = t[factorA[i]]
@@ -77,7 +77,6 @@ class PracticeSession {
             if (tempArray.length > 0) {
                 sortedTables.tables.push(i+1) 
                 sortedTables[i+1] = tempArray
-                tempArray = []
             }
         }
         return sortedTables
@@ -276,7 +275,6 @@ let swapFactors = document.querySelector('[data-swap-factors]')
 let playlistLength = document.querySelector('[data-playlist-length]')
 let toggleSelectAllCells = false
 let multiplicationTables = {
-    tables:[1,2,3,4,5,6,7,8,9,10],
     1:[0,0,0,0,0,0,0,0,0,0],
     2:[0,0,0,0,0,0,0,0,0,0],
     3:[0,0,0,0,0,0,0,0,0,0],
@@ -309,7 +307,6 @@ document.querySelector('.edit').addEventListener('click', () => {
     if (multiplications === null || !editPanel.classList.contains('invisible')) return
     if (multiplications.sessionCompleted()) {showEditPanel(); return}
     if (multiplications.settings.playlistProgress === 0) {
-        multiplicationTables.tables = [1,2,3,4,5,6,7,8,9,10]
         multiplications = null
         showEditPanel()
     } else {
