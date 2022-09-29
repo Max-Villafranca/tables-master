@@ -256,35 +256,50 @@ function getTables() {
 
 function enableHighlightTables() {
     columnHeads.forEach(i => {
-        i.addEventListener('mouseover', highlightColumn);
+        i.addEventListener('mouseover', highlightColumn)
         i.addEventListener('mouseleave', highlightColumn)
-    }
-    );
-
-    rowHeads.forEach(i => {
-        {
-            i.addEventListener('mouseover', highlightRow);
-            i.addEventListener('mouseleave', highlightRow)
-        }
     });
-
+    
+    rowHeads.forEach(i => {
+        i.addEventListener('mouseover', highlightRow);
+        i.addEventListener('mouseleave', highlightRow)
+    });
+    
     singleCell.forEach(i => {
         i.addEventListener('mouseover', highlightSingleCell)
         i.addEventListener('mouseleave', highlightSingleCell)
     });
-
+    
     allCells.addEventListener('mouseover', highlightAllCells)
     allCells.addEventListener('mouseleave', highlightAllCells)
+    
+    document.querySelector('.tablesEditor').addEventListener('touchstart', e => {
+        e.preventDefault()
+        let x = e.changedTouches[0].clientX
+        let y = e.changedTouches[0].clientY
+        console.log(document.elementFromPoint(x,y))
+    })
+    
+    document.querySelector('.tablesEditor').addEventListener('touchend', e => {
+        e.preventDefault()
+        let x = e.changedTouches[0].clientX
+        let y = e.changedTouches[0].clientY
+        console.log(document.elementFromPoint(x,y))
+    })
 }
 
 function enableSelectTables() {
     columnHeads.forEach(i => { i.addEventListener('click', selectColumn) })
-
+    columnHeads.forEach(i => { i.addEventListener('touchstart', selectColumn) })
+    
     rowHeads.forEach(i => { i.addEventListener('click', selectRow) })
-
+    rowHeads.forEach(i => { i.addEventListener('touchstart', selectRow) })
+    
     singleCell.forEach(i => { i.addEventListener('click', selectSingleCell) })
-
+    singleCell.forEach(i => { i.addEventListener('touchstart', selectSingleCell) })
+    
     allCells.addEventListener('click', selectAllCells)
+    allCells.addEventListener('touchstart', selectAllCells)
 }
 
 function showEditPanel() {
