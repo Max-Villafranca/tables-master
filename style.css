@@ -8,17 +8,14 @@
 }
 
 :root {
-    --cellWidth: 1.6rem;
-    --cellHeight: 1.6rem;
+    --cellWidth: 1.7rem;
+    --cellHeight: 1.7rem;
     --headWidth: 2.8rem;
     --headHeight: 2.5rem;
-    --tableRadius:4px;
-    --headBackColor: rgb(124, 144, 195,.75);
-    --cellBackColor: rgb(132, 144, 179,.5);
-    --cellHighlight: rgba(172, 255, 47, 0.75);
-    --cellSelect: teal;
+    --headBackColor: hsla(223, 37%, 63%, 0.75);
+    --cellBackColor: hsla(225, 24%, 60%, 0.5);
+    --cellHighlight: hsla(255, 24%, 50%, 0.75);
     background-color: lightgray;
-
 }
 
 .invisible.invisible {
@@ -82,21 +79,17 @@
     height:     var(--headHeight);
 }
 
-.tablesEditor tr:last-child {
-    height: calc(var(--cellHeight) + 2rem);
-}
-
-.tablesEditor tr:last-child>td :first- {
-    position: relative;
-    bottom: 2rem;
+.tablesEditor tr:last-child :is(th, td){
+    height: calc(var(--cellHeight) + .5rem);
+    padding-bottom: .5rem;
 }
 
 .tablesEditor :last-child:is(th,td) {
     width: calc(var(--cellWidth) + .5rem);
+    padding-right: .5rem;
 }
 
 .multiplicationSelect.multiplicationSelect {
-    /* background-color: var(--cellSelect) */
     color: red;
     font-weight: bold;
 }
