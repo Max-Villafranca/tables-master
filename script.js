@@ -273,18 +273,8 @@ function enableHighlightTables() {
     allCells.addEventListener('mouseover', highlightAllCells)
     allCells.addEventListener('mouseleave', highlightAllCells)
     
-    document.querySelector('.tablesEditor').addEventListener('touchstart', e => {
-        e.preventDefault()
-        let x = e.changedTouches[0].clientX
-        let y = e.changedTouches[0].clientY
-        console.log(document.elementFromPoint(x,y))
-    })
-    
     document.querySelector('.tablesEditor').addEventListener('touchend', e => {
-        e.preventDefault()
-        let x = e.changedTouches[0].clientX
-        let y = e.changedTouches[0].clientY
-        console.log(document.elementFromPoint(x,y))
+        if (e.cancelable) e.preventDefault()
     })
 }
 
