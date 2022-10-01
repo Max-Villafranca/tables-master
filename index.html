@@ -3,6 +3,7 @@
 <head>
     <meta  charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
     <title>Tables Master</title>
+    <meta name="description" content="Helps you learn and practice the multiplication tables">
     <link rel="stylesheet" href="style.css">
     <script defer src="script.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -55,12 +56,12 @@
     </div>
     <div class="editPanel invisible">
         <div class="practiceSettings">
-            <input type="checkbox" checked data-random-factors>
-            <label>Random factors</label></br>
-            <input type="checkbox" data-swap-factors>
-            <label>Swap factors Randomly</label></br>
-            <input type="number" value="5" min="10" max="9999" data-playlist-length style="width:3rem ;">
-            <label>Playlist length</label>
+            <input type="checkbox" id="randomFactors" checked data-random-factors>
+            <label for="randomFactors">Random factors</label></br>
+            <input type="checkbox" id="swapFactors" data-swap-factors>
+            <label for="swapFactors">Swap factors Randomly</label></br>
+            <input type="number" id="playlistLenght" value="5" min="10" max="9999" data-playlist-length style="width:3rem ;">
+            <label for="playlistLenght">Playlist length</label>
         </div>
         <table class="tablesEditor">
             <tbody>
