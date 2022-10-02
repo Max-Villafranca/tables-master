@@ -114,7 +114,7 @@ input::-webkit-inner-spin-button {
 
 .checkbox-container input[type = checkbox]:checked+::before{
     background-color: var(--headBackColor);
-    content: '\002714';
+    content: '\2713';
     color: red;
 }
 
