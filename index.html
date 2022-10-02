@@ -7,11 +7,10 @@
     <link rel="stylesheet" href="style.css">
     <script defer src="script.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;900&display=swap" rel="stylesheet">
-</head>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 
-<body>
+    <body>
     <div class="menuPanel">
         <div class="edit">Edit</div>
         <div class="practice">Practice</div>
@@ -56,17 +55,23 @@
     </div>
     <div class="editPanel invisible">
         <div class="practiceSettings">
-            <input type="checkbox" id="randomFactors" checked data-random-factors>
-            <label for="randomFactors">Random factors</label></br>
-            <input type="checkbox" id="swapFactors" data-swap-factors>
-            <label for="swapFactors">Swap factors Randomly</label></br>
-            <input type="number" id="playlistLenght" value="5" min="10" max="9999" data-playlist-length style="width:3rem ;">
-            <label for="playlistLenght">Playlist length</label>
+            <div class="checkbox-container">
+                <input type="checkbox" id="randomFactors" checked data-random-factors>
+                <label for="randomFactors">Random factors</label></br>   
+            </div>
+            <div class="checkbox-container">
+                <input type="checkbox" id="swapFactors" data-swap-factors>
+                <label for="swapFactors">Swap factors Randomly</label></br>
+            </div>
+            <div class="checkbox-container">
+                <input type="number" id="playlistLenght" value="20" min="10" max="9999" data-playlist-length>
+                <label for="playlistLenght">Playlist length</label>
+            </div>
         </div>
         <table class="tablesEditor">
             <tbody>
                 <tr>
-                    <th id="allTables">&nbsp;</th>
+                    <th id="allTables" tabindex="0">&nbsp;</th>
                     <th class="factors1" data-link-factors="factors1"></th>
                     <th class="factors2" data-link-factors="factors2"></th>
                     <th class="factors3" data-link-factors="factors3"></th>
@@ -79,7 +84,7 @@
                     <th class="factors10" data-link-factors="factors10"></th>
                 </tr>
                 <tr class="table1">
-                    <th>&nbsp1 × </th>
+                    <th tabindex="0">&nbsp1 × </th>
                     <td class="factors1"  data-table="1">1</td>
                     <td class="factors2"  data-table="1">2</td>
                     <td class="factors3"  data-table="1">3</td>
@@ -92,7 +97,7 @@
                     <td class="factors10" data-table="1">10</td>
                 </tr>
                 <tr class="table2">
-                    <th>&nbsp2 × </th>
+                    <th tabindex="0">&nbsp2 × </th>
                     <td class="factors1"  data-table="2">1</td>
                     <td class="factors2"  data-table="2">2</td>
                     <td class="factors3"  data-table="2">3</td>
@@ -105,7 +110,7 @@
                     <td class="factors10" data-table="2">10</td>
                 </tr>
                 <tr class="table3">
-                    <th>&nbsp3 × </th>
+                    <th tabindex="0">&nbsp3 × </th>
                     <td class="factors1"  data-table="3">1</td>
                     <td class="factors2"  data-table="3">2</td>
                     <td class="factors3"  data-table="3">3</td>
@@ -118,7 +123,7 @@
                     <td class="factors10" data-table="3">10</td>
                 </tr>
                 <tr class="table4">
-                    <th>&nbsp4 × </th>
+                    <th tabindex="0">&nbsp4 × </th>
                     <td class="factors1"  data-table="4">1</td>
                     <td class="factors2"  data-table="4">2</td>
                     <td class="factors3"  data-table="4">3</td>
@@ -131,7 +136,7 @@
                     <td class="factors10" data-table="4">10</td>
                 </tr>
                 <tr class="table5">
-                    <th>&nbsp5 × </th>
+                    <th tabindex="0">&nbsp5 × </th>
                     <td class="factors1"  data-table="5">1</td>
                     <td class="factors2"  data-table="5">2</td>
                     <td class="factors3"  data-table="5">3</td>
@@ -144,7 +149,7 @@
                     <td class="factors10" data-table="5">10</td>
                 </tr>
                 <tr class="table6">
-                    <th>&nbsp6 × </th>
+                    <th tabindex="0">&nbsp6 × </th>
                     <td class="factors1"  data-table="6">1</td>
                     <td class="factors2"  data-table="6">2</td>
                     <td class="factors3"  data-table="6">3</td>
@@ -157,7 +162,7 @@
                     <td class="factors10" data-table="6">10</td>
                 </tr>
                 <tr class="table7">
-                    <th>&nbsp7 × </th>
+                    <th tabindex="0">&nbsp7 × </th>
                     <td class="factors1"  data-table="7">1</td>
                     <td class="factors2"  data-table="7">2</td>
                     <td class="factors3"  data-table="7">3</td>
@@ -170,7 +175,7 @@
                     <td class="factors10" data-table="7">10</td>
                 </tr>
                 <tr class="table8">
-                    <th>&nbsp8 × </th>
+                    <th tabindex="0">&nbsp8 × </th>
                     <td class="factors1"  data-table="8">1</td>
                     <td class="factors2"  data-table="8">2</td>
                     <td class="factors3"  data-table="8">3</td>
@@ -183,7 +188,7 @@
                     <td class="factors10" data-table="8">10</td>
                 </tr>
                 <tr class="table9">
-                    <th>&nbsp9 × </th>
+                    <th tabindex="0">&nbsp9 × </th>
                     <td class="factors1"  data-table="9">1</td>
                     <td class="factors2"  data-table="9">2</td>
                     <td class="factors3"  data-table="9">3</td>
@@ -196,7 +201,7 @@
                     <td class="factors10" data-table="9">10</td>
                 </tr>
                 <tr class="table10">
-                    <th>10 × </th>
+                    <th tabindex="0">10 × </th>
                     <td class="factors1"  data-table="10">1</td>
                     <td class="factors2"  data-table="10">2</td>
                     <td class="factors3"  data-table="10">3</td>
