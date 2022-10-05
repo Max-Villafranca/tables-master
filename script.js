@@ -273,6 +273,10 @@ function enableHighlightTables() {
     allCells.addEventListener('mouseover', highlightAllCells)
     allCells.addEventListener('mouseleave', highlightAllCells)
     
+    document.querySelector('.tablesEditor').addEventListener('touchstart', e => {
+        if (e.cancelable) e.preventDefault()
+    },{passive:false})
+
     document.querySelector('.tablesEditor').addEventListener('touchend', e => {
         if (e.cancelable) e.preventDefault()
     })
@@ -280,16 +284,16 @@ function enableHighlightTables() {
 
 function enableSelectTables() {
     columnHeads.forEach(i => { i.addEventListener('click', selectColumn) })
-    columnHeads.forEach(i => { i.addEventListener('touchstart', selectColumn) })
+    columnHeads.forEach(i => { i.addEventListener('touchstart', selectColumn,{passive: true}) })
     
     rowHeads.forEach(i => { i.addEventListener('click', selectRow) })
-    rowHeads.forEach(i => { i.addEventListener('touchstart', selectRow) })
+    rowHeads.forEach(i => { i.addEventListener('touchstart', selectRow,{passive: true}) })
     
     singleCell.forEach(i => { i.addEventListener('click', selectSingleCell) })
-    singleCell.forEach(i => { i.addEventListener('touchstart', selectSingleCell) })
+    singleCell.forEach(i => { i.addEventListener('touchstart', selectSingleCell,{passive: true}) })
     
     allCells.addEventListener('click', selectAllCells)
-    allCells.addEventListener('touchstart', selectAllCells)
+    allCells.addEventListener('touchstart', selectAllCells,{passive: true})
 }
 
 function showEditPanel() {
