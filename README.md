@@ -18,3 +18,4 @@ in a clean, organized and professional manner.
 - Add event listener on modal to allow canceling it with escape and when clicking on gray area.
 - Add helping hand on practice session. (currently only indicates if answered correct or wrong)
 - Improve results visuals, it looks too plain as it is.
+- Add ability to save state/status to Local Storage
