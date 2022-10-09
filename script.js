@@ -1,12 +1,12 @@
 class PracticeSession {
     #sessionEnded = false
+    #playlistProgress = 0
     #correctAnswers = 0
     #currentTableCompleted = true
     #expectingInput = false
     #tablesGenerated = []
     #factorsGenerated = []
     constructor(tables, settings) {
-        this.startTime = performance.now()
         this.display = document.querySelector('.display')
         this.score = document.querySelector('.score')
         this.keyboard = document.querySelector('.keyboard')
@@ -16,15 +16,14 @@ class PracticeSession {
         this.displayFactorA = document.querySelector('#displayFactorA')
         this.displayFactorB = document.querySelector('#displayFactorB')
         this.displayProduct = document.querySelector('#displayProduct')
-        this.settings = settings
-        this.tables = this.sortTables(tables)
         this.results.classList.add('invisible')
         this.display.classList.remove('invisible')
         this.keyboard.classList.remove('invisible')
+        this.syncLocalStorage(tables, settings)
     }
 
     play() {
-        if (this.settings.playlistProgress === this.settings.playlistLength) return this.displayResults()
+        if (this.#playlistProgress >= this.settings.playlistLength) return this.displayResults()
         let factors = this.getNextMultiplication()
         this.displayProduct.textContent = ''
         this.displayFactorA.textContent = factors.a
@@ -32,37 +31,28 @@ class PracticeSession {
         this.#expectingInput = true
     }
 
-    appendNumber(e) {
-        let num = e.key ?? e.target.textContent
-        if (!this.#expectingInput) return
-        if (this.displayProduct.textContent.length >= 3) return
-        this.displayProduct.textContent = this.displayProduct.textContent + num
-    }
-
-    backspace() {
-        if (!this.#expectingInput) return
-        this.displayProduct.textContent = this.displayProduct.textContent.slice(0, -1)
-    }
-
-    checkAnswer() {
-        if (!this.#expectingInput) return
-        if (this.displayProduct.textContent == '') return
-        this.#expectingInput = false
-        this.settings.playlistProgress++
-        let correctAnswer = this.displayFactorA.textContent * this.displayFactorB.textContent
-        let enteredAnswer = parseInt(this.displayProduct.textContent)
-        if (correctAnswer === enteredAnswer) {
-            this.updateSaveScore(1)
-            this.display.classList.add('correctAnswer')
+    syncLocalStorage(tables, settings) {
+        if (!localStorage.getItem('state')){
+            this.startTime = Date.now()
+            this.settings = settings
+            this.tables = this.sortTables(tables)
+            this.state = {
+                startTime: this.startTime,
+                playlistProgress: this.#playlistProgress,
+                correctAnswers: this.#correctAnswers
+            }
+            localStorage.setItem('settings', JSON.stringify(this.settings))
+            localStorage.setItem('tables', JSON.stringify(this.tables))
+            localStorage.setItem('state', JSON.stringify(this.state))
         } else {
-            this.updateSaveScore(0)
-            this.display.classList.add('incorrectAnswer')
+            this.settings = JSON.parse(localStorage.getItem('settings'))
+            this.tables = JSON.parse(localStorage.getItem('tables'))
+            this.state = JSON.parse(localStorage.getItem('state'))
+            this.startTime = this.state.startTime
+            this.#correctAnswers = this.state.correctAnswers
+            this.#playlistProgress = this.state.playlistProgress
         }
-        setTimeout( () => {
-            this.display.classList.remove('correctAnswer');
-            this.display.classList.remove('incorrectAnswer');
-            this.play()
-        }, 1500);
+
     }
 
     sortTables(t) {
@@ -130,18 +120,58 @@ class PracticeSession {
         }
         return { a, b };
     }
+   
+    appendNumber(e) {
+        let num = e.key ?? e.target.textContent
+        if (!this.#expectingInput) return
+        if (this.displayProduct.textContent.length >= 3) return
+        this.displayProduct.textContent = this.displayProduct.textContent + num
+    }
+
+    backspace() {
+        if (!this.#expectingInput) return
+        this.displayProduct.textContent = this.displayProduct.textContent.slice(0, -1)
+    }
+
+    checkAnswer() {
+        if (!this.#expectingInput) return
+        if (this.displayProduct.textContent == '') return
+        this.#expectingInput = false
+        let correctAnswer = this.displayFactorA.textContent * this.displayFactorB.textContent
+        let enteredAnswer = parseInt(this.displayProduct.textContent)
+        if (correctAnswer === enteredAnswer) {
+            this.updateSaveScore(1)
+            this.display.classList.add('correctAnswer')
+        } else {
+            this.updateSaveScore(0)
+            this.display.classList.add('incorrectAnswer')
+        }
+        setTimeout( () => {
+            this.display.classList.remove('correctAnswer');
+            this.display.classList.remove('incorrectAnswer');
+            this.play()
+        }, 1500);
+    }
+    
+    updateSaveScore(ans) {
+        this.#playlistProgress ++
+        if (ans === 1) this.#correctAnswers++
+        this.state.playlistProgress = this.#playlistProgress
+        this.state.correctAnswers = this.#correctAnswers
+        localStorage.setItem('state', JSON.stringify(this.state))
+    }
 
     displayResults(showRestartButton = true) {
         this.#expectingInput = false
-        const score = Math.round(this.#correctAnswers / this.settings.playlistProgress * 1000) / 10
-        let message =
-            console.log(`Your Score is: ${score}%`)
+        localStorage.clear()
+        const score = Math.round(this.#correctAnswers / this.#playlistProgress * 1000) / 10
+        let message
         if (score <= 50) message = '😣 ❌'
         if (score > 50 && score < 80) message = '😅 ❗'
         if (score >= 80 && score < 95) message = '😎 ✔️'
         if (score >= 95) message = '🥇 😃 🏆 '
-        this.timesResponded.textContent = this.settings.playlistProgress
-        this.minutesPracticed.textContent = Math.round((performance.now() - this.startTime) / 1000 / 60)
+        this.timesResponded.textContent = this.#playlistProgress
+        this.minutesPracticed.textContent = Math.round((Date.now() - this.startTime) / 1000 / 60)
         this.score.textContent = `${score}% ${message}`
         this.display.classList.add('invisible')
         this.keyboard.classList.add('invisible')
@@ -151,12 +181,8 @@ class PracticeSession {
         this.#sessionEnded = true
     }
 
-    updateSaveScore(ans) {
-        if (ans === 1) this.#correctAnswers++
-        // const right = localStorage.getItem('right') ?? 0
-        // const wrong = localStorage.getItem('wrong') ?? 0
-        // if (ans===1) localStorage.setItem('right',`${parseInt(right)+1}`)
-        // if (ans===0) localStorage.setItem('wrong',`${parseInt(wrong)+1}`)
+    getPlaylistProgress(){
+        return this.#playlistProgress
     }
 
     sessionCompleted() {
@@ -247,18 +273,13 @@ function getSettings() {
         randomFactors: document.querySelector('[data-random-factors]').checked,
         swapFactors: document.querySelector('[data-swap-factors]').checked,
         playlistLength: parseInt(document.querySelector('[data-playlist-length]').value),
-        playlistProgress: 0
     }
-}
-
-function getTables() {
-
 }
 
 function enableKeypad(){
     let validKey = ['1','2','3','4','5','6','7','8','9','0','Enter','Backspace']
     document.addEventListener('keydown', e => {
-        if (!validKey.includes(e.key)) return
+        if (!validKey.includes(e.key) || !modalWrapper.classList.contains('invisible') || !multiplications) return
         else if (e.key === 'Enter') multiplications.checkAnswer()
         else if (e.key === 'Backspace') multiplications.backspace()
         else multiplications.appendNumber(e)
@@ -308,8 +329,8 @@ function enableSelectTables() {
 }
 
 function showEditPanel() {
-    editPanel.classList.remove('invisible')
     practicePanel.classList.add('invisible')
+    editPanel.classList.remove('invisible')
 }
 
 function showPracticePanel() {
@@ -366,7 +387,7 @@ document.querySelector('.practice').addEventListener('click', () => {
 document.querySelector('.edit').addEventListener('click', () => {
     if (multiplications === null || !editPanel.classList.contains('invisible')) return
     if (multiplications.sessionCompleted()) { showEditPanel(); return }
-    if (multiplications.settings.playlistProgress === 0) {
+    if (multiplications.getPlaylistProgress() === 0) {
         multiplications = null
         showEditPanel()
     } else {

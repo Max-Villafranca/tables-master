@@ -12,10 +12,6 @@ in a clean, organized and professional manner.
 ## Features
 - It has a selection menu with a cool interactive table.
 - It will run a practice session based on the multiplications and settings selected.
-- This is still version 0, but it's almost ready for version 1.
-
-## To Do (to release V1):
-- Add ability to save state/status to Local Storage
 
 ## To Do (to release V1.1):
 - Add helping hand on practice session. (currently only indicates if answered correct or wrong)
