@@ -33,9 +33,10 @@ class PracticeSession {
     }
 
     appendNumber(e) {
+        let num = e.key ?? e.target.textContent
         if (!this.#expectingInput) return
         if (this.displayProduct.textContent.length >= 3) return
-        this.displayProduct.textContent = this.displayProduct.textContent.toString() + e.target.textContent.toString()
+        this.displayProduct.textContent = this.displayProduct.textContent + num
     }
 
     backspace() {
@@ -254,6 +255,16 @@ function getTables() {
 
 }
 
+function enableKeypad(){
+    let validKey = ['1','2','3','4','5','6','7','8','9','0','Enter','Backspace']
+    document.addEventListener('keydown', e => {
+        if (!validKey.includes(e.key)) return
+        else if (e.key === 'Enter') multiplications.checkAnswer()
+        else if (e.key === 'Backspace') multiplications.backspace()
+        else multiplications.appendNumber(e)
+    })
+}
+
 function enableHighlightTables() {
     columnHeads.forEach(i => {
         i.addEventListener('mouseover', highlightColumn)
@@ -314,6 +325,7 @@ const allCells = document.querySelector('#allTables')
 const editPanel = document.querySelector('.editPanel')
 const restartPracticeButton = document.querySelector('#restartPractice')
 const practicePanel = document.querySelector('.practicePanel')
+const modalWrapper = document.querySelector('.modal-wrapper')
 let randomFactors = document.querySelector('[data-random-factors]')
 let swapFactors = document.querySelector('[data-swap-factors]')
 let playlistLength = document.querySelector('[data-playlist-length]')
@@ -340,8 +352,8 @@ document.querySelectorAll('.numberKeys').forEach(button => {
     button.addEventListener('click', (e) => { multiplications.appendNumber(e) })
 })
 document.querySelector('#backspace').addEventListener('click', (e) => { multiplications.backspace(e) })
-document.querySelector('#enter').addEventListener('click', (e) => { multiplications.checkAnswer(e) })
 
+document.querySelector('#enter').addEventListener('click', (e) => { multiplications.checkAnswer(e) })
 
 document.querySelector('.practice').addEventListener('click', () => {
     if (!practicePanel.classList.contains('invisible')) return
@@ -358,12 +370,12 @@ document.querySelector('.edit').addEventListener('click', () => {
         multiplications = null
         showEditPanel()
     } else {
-        document.querySelector('.modal-wrapper').classList.remove('invisible')
+        modalWrapper.classList.remove('invisible')
     }
 })
 
 document.querySelector('#yes-endPractice').addEventListener('click', () => {
-    document.querySelector('.modal-wrapper').classList.add('invisible')
+    modalWrapper.classList.add('invisible')
     multiplications.displayResults(false)
     multiplications = null
     setTimeout(() => {
@@ -371,9 +383,19 @@ document.querySelector('#yes-endPractice').addEventListener('click', () => {
     }, 3000);
 })
 
+//*event listeners to close modal.
 document.querySelector('#no-endPractice').addEventListener('click', () => {
-    document.querySelector('.modal-wrapper').classList.add('invisible')
+    modalWrapper.classList.add('invisible')
 })
+
+document.addEventListener('keydown', e => {
+    if (e.code === 'Escape') modalWrapper.classList.add('invisible')
+})
+
+modalWrapper.addEventListener('click', e => {
+    if (e.target === modalWrapper) modalWrapper.classList.add('invisible')
+})
+// end *event listeners to close modal.
 
 restartPracticeButton.addEventListener('click', () => {
     multiplications = null
@@ -382,6 +404,7 @@ restartPracticeButton.addEventListener('click', () => {
 })
 
 multiplications.play()
+enableKeypad()
 enableHighlightTables()
 enableSelectTables()
 

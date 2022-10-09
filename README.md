@@ -15,7 +15,8 @@ in a clean, organized and professional manner.
 - This is still version 0, but it's almost ready for version 1.
 
 ## To Do (to release V1):
-- Add event listener on modal to allow canceling it with escape and when clicking on gray area.
+- Add ability to save state/status to Local Storage
+
+## To Do (to release V1.1):
 - Add helping hand on practice session. (currently only indicates if answered correct or wrong)
 - Improve results visuals, it looks too plain as it is.
-- Add ability to save state/status to Local Storage
