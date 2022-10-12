@@ -338,6 +338,11 @@ function showPracticePanel() {
     practicePanel.classList.remove('invisible')
 }
 
+function endpracticesession() {
+    multiplications = null
+    localStorage.clear()
+}
+
 // variables
 const columnHeads = document.querySelectorAll('.tablesEditor tr:first-child>th:not(#allTables)')
 const rowHeads = document.querySelectorAll('.tablesEditor :not(:first-child) th')
@@ -388,7 +393,7 @@ document.querySelector('.edit').addEventListener('click', () => {
     if (multiplications === null || !editPanel.classList.contains('invisible')) return
     if (multiplications.sessionCompleted()) { showEditPanel(); return }
     if (multiplications.getPlaylistProgress() === 0) {
-        multiplications = null
+        endpracticesession()
         showEditPanel()
     } else {
         modalWrapper.classList.remove('invisible')
@@ -398,7 +403,7 @@ document.querySelector('.edit').addEventListener('click', () => {
 document.querySelector('#yes-endPractice').addEventListener('click', () => {
     modalWrapper.classList.add('invisible')
     multiplications.displayResults(false)
-    multiplications = null
+    endpracticesession()
     setTimeout(() => {
         showEditPanel()
     }, 3000);
@@ -419,7 +424,7 @@ modalWrapper.addEventListener('click', e => {
 // end *event listeners to close modal.
 
 restartPracticeButton.addEventListener('click', () => {
-    multiplications = null
+    endpracticesession()
     multiplications = new PracticeSession(multiplicationTables, getSettings())
     multiplications.play()
 })
