@@ -16,10 +16,12 @@ class PracticeSession {
         this.displayFactorA = document.querySelector('#displayFactorA')
         this.displayFactorB = document.querySelector('#displayFactorB')
         this.displayProduct = document.querySelector('#displayProduct')
+        this.progressBar = document.querySelector('.progress')
         this.results.classList.add('invisible')
         this.display.classList.remove('invisible')
         this.keyboard.classList.remove('invisible')
         this.syncLocalStorage(tables, settings)
+        this.progressBar.setAttribute('style','width:0%')
     }
 
     play() {
@@ -139,6 +141,8 @@ class PracticeSession {
         this.#expectingInput = false
         let correctAnswer = this.displayFactorA.textContent * this.displayFactorB.textContent
         let enteredAnswer = parseInt(this.displayProduct.textContent)
+        this.#playlistProgress ++
+        this.updateProgressBar()
         if (correctAnswer === enteredAnswer) {
             this.updateSaveScore(1)
             this.display.classList.add('correctAnswer')
@@ -154,11 +158,15 @@ class PracticeSession {
     }
     
     updateSaveScore(ans) {
-        this.#playlistProgress ++
         if (ans === 1) this.#correctAnswers++
         this.state.playlistProgress = this.#playlistProgress
         this.state.correctAnswers = this.#correctAnswers
         localStorage.setItem('state', JSON.stringify(this.state))
+    }
+
+    updateProgressBar(){
+        this.progressBar.setAttribute('style',
+        `width:${100/this.settings.playlistLength*this.#playlistProgress}%`)
     }
 
     displayResults(showRestartButton = true) {

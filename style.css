@@ -217,9 +217,11 @@ input::-webkit-inner-spin-button {
 
 .display{
     display: flex;
-    align-items: center;
+    align-items: end;
     height: 8rem;
     font-size: 3rem;
+    flex-wrap: wrap;
+    padding-bottom: 1rem;
 }
 
 .correctAnswer{
@@ -241,6 +243,23 @@ input::-webkit-inner-spin-button {
 #displayProduct{
     width: 5rem;
 }
+
+.progressBar{
+    height: .6rem;
+    width: 100%;
+    background-color: gray;
+    overflow: hidden;
+    border-radius: 20px;
+}
+
+.progress{
+    height: 100%;
+    width: 50%;
+    background-color: hsl(0, 60%, 50%);
+    overflow: hidden;
+    border-radius: 20px;
+}
+
 .keyboard{
     display: grid;
     width: 16rem;

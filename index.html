@@ -9,8 +9,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-
-    <body>
+</head>
+<body>
     <div class="menuPanel">
         <div class="edit">Edit</div>
         <div class="practice">Practice</div>
@@ -29,6 +29,9 @@
             <span id="displayFactorB"></span>
             <span id="displayEquals">=</span>
             <span id="displayProduct"></span>
+            <div class="progressBar">
+                <div class="progress"></div>
+            </div>
         </div>
         <div class="keyboard">
             <button class="numberKeys" tabindex="-1">7</button>
@@ -64,7 +67,7 @@
                 <label for="swapFactors">Swap factors Randomly</label></br>
             </div>
             <div class="checkbox-container">
-                <input type="number" id="playlistLenght" value="20" min="10" max="9999" data-playlist-length>
+                <input type="number" id="playlistLenght" value="50" min="10" max="9999" data-playlist-length>
                 <label for="playlistLenght">Playlist length</label>
             </div>
         </div>
