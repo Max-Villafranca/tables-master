@@ -167,7 +167,6 @@ let playlistLength = document.querySelector('[data-playlist-length]')
 let toggleSelectColumn = [true,true,true,true,true,true,true,true,true,true]
 let toggleSelectRow = [true,true,true,true,true,true,true,true,true,true]
 let toggleSelectAllCells = false
-
 let multiplicationTables = {
     1: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     2: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -180,6 +179,7 @@ let multiplicationTables = {
     9: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     10: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 }
+
 selectAllCells()
 let multiplications = new InlineMultController(multiplicationTables, getSettings())
 
@@ -195,7 +195,7 @@ document.querySelector('.practice').addEventListener('click', () => {
 document.querySelector('.edit').addEventListener('click', () => {
     if (multiplications === null || !editPanel.classList.contains('invisible')) return
     if (multiplications.sessionCompleted()) { showEditPanel(); return }
-    if (multiplications.playlistProgress === 0) {
+    if (multiplications.getPlaylistProgress === 0) {
         endpracticesession()
         showEditPanel()
     } else {
@@ -225,8 +225,6 @@ modalWrapper.addEventListener('click', e => {
     if (e.target === modalWrapper) modalWrapper.classList.add('invisible')
 })
 // end *event listeners to close modal.
-
-
 
 multiplications.play()
 enableKeypad()

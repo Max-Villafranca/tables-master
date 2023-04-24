@@ -1,9 +1,10 @@
-
 const restartPracticeButton = document.querySelector('#restartPractice')
 
 export class InlineMultView {
+    #expectingInput = false
 
     constructor(controller) {
+        this.controller = controller
         this.display = document.querySelector('.display')
         this.score = document.querySelector('.score')
         this.keyboard = document.querySelector('.keyboard')
@@ -18,42 +19,71 @@ export class InlineMultView {
         this.display.classList.remove('invisible')
         this.keyboard.classList.remove('invisible')
         this.progressBar.setAttribute('style','width:0%')
+
+        document.querySelectorAll('.numberKeys').forEach(button => {
+            button.addEventListener('click', (e) => { this.appendNumber(e) })
+        })
+        document.querySelector('#backspace').addEventListener('click', (e) => { this.backspace(e) })
+        
+        document.querySelector('#enter').addEventListener('click', (e) => { this.enterAnswer() })
     }
 
     appendNumber(e) {
         let num = e.key ?? e.target.textContent
-        if (!this.model.getExpectingInput()) return
-        if (this.model.displayProduct.textContent.length >= 3) return
-        this.model.displayProduct.textContent = this.model.displayProduct.textContent + num
+        if (!this.#expectingInput) return
+        if (this.displayProduct.textContent.length >= 3) return
+        this.displayProduct.textContent = this.displayProduct.textContent + num
     }
 
     backspace() {
-        if (!model.getExpectingInput()) return
-        this.model.displayProduct.textContent = this.model.displayProduct.textContent.slice(0, -1)
+        if (!this.#expectingInput) return
+        this.displayProduct.textContent = this.displayProduct.textContent.slice(0, -1)
     }
 
-    updateProgressBar(){
-        this.model.progressBar.setAttribute('style',
-        `width:${100/this.model.settings.playlistLength*model.getPlaylistProgress()}%`)
+    enterAnswer() {
+        if (this.displayProduct.textContent == '') return
+        if (!this.#expectingInput) return
+        this.#expectingInput = false
+        if (this.controller.isAnswerCorrect(parseInt(this.displayProduct.textContent))) {
+            this.display.classList.add('correctAnswer')
+        } else {
+            this.display.classList.add('incorrectAnswer')
+        }
+        this.updateProgressBar()
+        setTimeout( () => {
+            this.display.classList.remove('correctAnswer');
+            this.display.classList.remove('incorrectAnswer');
+            this.controller.play()
+        }, 1500);
+    }
+
+    updateProgressBar() {
+        let progress = this.controller.progressPercentage
+        this.progressBar.setAttribute('style',`width:${progress}%`)
     }
 
     displayResults(showRestartButton = true) {
-        model.getExpectingInput() = false
+        this.#expectingInput = false
         localStorage.clear()
-        const score = Math.round(model.getCorrectAnswers() / model.getPlaylistProgress() * 1000) / 10
         let message
+        let playlistProgress = this.controller.getPlaylistProgress()
+        const score = Math.round(this.controller.getCorrectAnswers() / playlistProgress * 1000) / 10
         if (score <= 50) message = '😣 ❌'
         if (score > 50 && score < 80) message = '😅 ❗'
         if (score >= 80 && score < 95) message = '😎 ✔️'
         if (score >= 95) message = '🥇 😃 🏆 '
-        this.model.timesResponded.textContent = model.getPlaylistProgress()
-        this.model.minutesPracticed.textContent = Math.round((Date.now() - this.model.startTime) / 1000 / 60)
-        this.model.score.textContent = `${score}% ${message}`
-        this.model.display.classList.add('invisible')
-        this.model.keyboard.classList.add('invisible')
-        this.model.restartPracticeButton.classList.remove('invisible')
-        if (!showRestartButton) this.model.restartPracticeButton.classList.add('invisible')
-        this.model.results.classList.remove('invisible')
+        this.timesResponded.textContent = playlistProgress
+        this.minutesPracticed.textContent = Math.round((Date.now() - this.controller.startTime) / 1000 / 60)
+        this.score.textContent = `${score}% ${message}`
+        this.display.classList.add('invisible')
+        this.keyboard.classList.add('invisible')
+        restartPracticeButton.classList.remove('invisible')
+        if (!showRestartButton) restartPracticeButton.classList.add('invisible')
+        this.results.classList.remove('invisible')
+    }
+
+    set expectingInput(flag) {
+        this.#expectingInput = flag
     }
 }
 

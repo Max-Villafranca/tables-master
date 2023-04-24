@@ -1,19 +1,74 @@
 export class InlineMultModel {
     #playlistProgress = 0
     #correctAnswers = 0
-    #expectingInput = false
-    constructor (tables, settings){
-        this.startTime
+
+    #currentTableCompleted = true
+    #tablesGenerated = []
+    #factorsGenerated = []
+    #lastFactors = {}
+    #startTime
+
+    constructor(controller, tables, settings) {
+        this.controller = controller
         this.syncLocalStorage(tables, settings)
+    }
+
+    getNextMultiplication() {
+        let a, b, swapAB
+        let getOrderedFacotorA = () => {
+            if (this.#currentTableCompleted) {
+                // if we are on the last table => tablesGenerated = []
+                if (this.#tablesGenerated.length === this.tables.tables.length) this.#tablesGenerated = []
+                this.#currentTableCompleted = false
+                this.#tablesGenerated.push(this.tables.tables[this.#tablesGenerated.length])
+            }
+            // append the next table to tablesGenerated
+            return this.#tablesGenerated[this.#tablesGenerated.length - 1]
+        }
+
+        let getOrderedFacotorB = () => {
+            let grabBeforeEmptyingArray
+            // if we are on the last FactorB of the current table
+            if (this.#factorsGenerated.length === this.tables[a].length - 1) {
+                this.#currentTableCompleted = true
+                grabBeforeEmptyingArray = this.tables[a][this.tables[a].length - 1]
+                this.#factorsGenerated = []
+                // return the last FactorB of the current table
+                return grabBeforeEmptyingArray
+            } else {
+                // append the current FactorB to factorsGenerated and return it
+                this.#factorsGenerated.push(this.tables[a][this.#factorsGenerated.length])
+                return this.#factorsGenerated[this.#factorsGenerated.length - 1]
+            }
+        }
+
+        if (this.settings.randomFactors) {
+            a = this.tables.tables[Math.floor(Math.random() * this.tables.tables.length)]
+        } else {
+            a = getOrderedFacotorA()
+        }
+        if (this.settings.randomFactors) {
+            b = this.tables[a][Math.floor(Math.random() * this.tables[a].length)]
+        } else {
+            b = getOrderedFacotorB()
+        }
+        if (this.settings.swapFactors && Math.random() > .5) {
+            swapAB = a
+            a = b
+            b = swapAB
+            console.log('⇄')
+        }
+        this.#lastFactors = {a, b}
+        return { a, b };
     }
     
     syncLocalStorage(tables, settings) {
         if (!localStorage.getItem('state')){
-            const startTime = Date.now()
+            this.#startTime = Date.now()
             this.settings = settings
             this.tables = this.sortTables(tables)
             this.state = {
-                startTime: startTime,
+                startTime: this.#startTime,
                 playlistProgress: this.#playlistProgress,
                 correctAnswers: this.#correctAnswers
             }
@@ -24,7 +79,7 @@ export class InlineMultModel {
             this.settings = JSON.parse(localStorage.getItem('settings'))
             this.tables = JSON.parse(localStorage.getItem('tables'))
             this.state = JSON.parse(localStorage.getItem('state'))
-            this.startTime = this.state.startTime
+            this.#startTime = this.state.startTime
             this.#correctAnswers = this.state.correctAnswers
             this.#playlistProgress = this.state.playlistProgress
         }
@@ -48,48 +103,34 @@ export class InlineMultModel {
         return sortedTables
     }
 
-    checkAnswer() {
-        if (!this.#expectingInput) return
-        if (view.displayProduct.textContent == '') return
-        this.#expectingInput = false
-        let correctAnswer = view.displayFactorA.textContent * view.displayFactorB.textContent
-        let enteredAnswer = parseInt(view.displayProduct.textContent)
+// check if #lastFactors could be replaced (may be in localStorage).
+    isAnswerCorrect(enteredAnswer) {  
+        let correctAnswer = this.#lastFactors.a * this.#lastFactors.b
         this.#playlistProgress ++
-        view.updateProgressBar()
         if (correctAnswer === enteredAnswer) {
-            view.updateSaveScore(1)
-            view.display.classList.add('correctAnswer')
-        } else {
-            view.updateSaveScore(0)
-            view.display.classList.add('incorrectAnswer')
+            this.updateSaveScore(1)
+            return true          
         }
-        setTimeout( () => {
-            view.display.classList.remove('correctAnswer');
-            view.display.classList.remove('incorrectAnswer');
-            view.play()
-        }, 1500);
+        this.updateSaveScore(0)
+        return false
     }
 
     updateSaveScore(ans) {
         if (ans === 1) this.#correctAnswers++
-        view.state.playlistProgress = this.#playlistProgress
-        view.state.correctAnswers = this.#correctAnswers
-        localStorage.setItem('state', JSON.stringify(view.state))
+        this.state.playlistProgress = this.#playlistProgress
+        this.state.correctAnswers = this.#correctAnswers
+        localStorage.setItem('state', JSON.stringify(this.state))
     }
 
-    getPlaylistProgress (){
+    getPlaylistProgress() {
         return this.#playlistProgress
     }
 
-    getCorrectAnswers (){
+    getCorrectAnswers() {
         return this.#correctAnswers
     }
 
-    getExpectingInput(){
-        return this.#expectingInput
-    }
-
-    setExpectingInput(bool){
-        this.#expectingInput = bool
+    get startTime() {
+        return this.#startTime
     }
 }
