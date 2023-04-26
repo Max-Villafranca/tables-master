@@ -1,7 +1,6 @@
 export class InlineMultModel {
     #playlistProgress = 0
     #correctAnswers = 0
-
     #currentTableCompleted = true
     #tablesGenerated = []
     #factorsGenerated = []
@@ -10,7 +9,7 @@ export class InlineMultModel {
 
     constructor(controller, tables, settings) {
         this.controller = controller
-        this.syncLocalStorage(tables, settings)
+        this.newSession(tables, settings)
     }
 
     getNextMultiplication() {
@@ -58,12 +57,12 @@ export class InlineMultModel {
             b = swapAB
             console.log('⇄')
         }
-        this.#lastFactors = {a, b}
+        this.#lastFactors = { a, b }
         return { a, b };
     }
-    
+
     syncLocalStorage(tables, settings) {
-        if (!localStorage.getItem('state')){
+        if (!localStorage.getItem('state')) {
             this.#startTime = Date.now()
             this.settings = settings
             this.tables = this.sortTables(tables)
@@ -103,13 +102,12 @@ export class InlineMultModel {
         return sortedTables
     }
 
-// check if #lastFactors could be replaced (may be in localStorage).
-    isAnswerCorrect(enteredAnswer) {  
+    isAnswerCorrect(enteredAnswer) {
         let correctAnswer = this.#lastFactors.a * this.#lastFactors.b
         this.#playlistProgress ++
         if (correctAnswer === enteredAnswer) {
             this.updateSaveScore(1)
-            return true          
+            return true
         }
         this.updateSaveScore(0)
         return false
@@ -132,5 +130,20 @@ export class InlineMultModel {
 
     get startTime() {
         return this.#startTime
+    }
+
+    reset() {
+        this.#playlistProgress = 0
+        this.#correctAnswers = 0
+        this.#currentTableCompleted = true
+        this.#tablesGenerated = []
+        this.#factorsGenerated = []
+        this.#lastFactors = {}
+        this.#startTime = undefined
+        localStorage.clear()
+    }
+
+    newSession(tables, settings) {
+        this.syncLocalStorage(tables, settings)
     }
 }

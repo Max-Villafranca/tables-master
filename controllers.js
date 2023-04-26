@@ -1,19 +1,22 @@
 import { InlineMultView } from "./views.js"
 import { InlineMultModel } from "./models.js"
+import { getSettings } from "./script.js"
+
 
 export class InlineMultController {
-    #sessionEnded = false
-    
-    constructor(tables, settings){
+    #sessionCompleted = false
+
+    constructor(tables, settings) {
+        this.tables = tables
+        this.settings = settings
         this.view = new InlineMultView(this)
         this.model = new InlineMultModel(this, tables, settings)
-        this.playlistProgress = this.model.getPlaylistProgress()
     }
 
     play() {
-        if (this.playlistProgress >= this.model.settings.playlistLength) {
-            this.model.displayResults()
-            this.#sessionEnded = true
+        if (this.getPlaylistProgress() >= this.model.settings.playlistLength) {
+            this.view.displayResults()
+            this.endPracticeSession()
         }
         let factors = this.model.getNextMultiplication()
         this.view.displayProduct.textContent = ''
@@ -22,7 +25,7 @@ export class InlineMultController {
         this.view.expectingInput = true
     }
 
-    displayResults (flag) {
+    displayResults(flag) {
         this.view.displayResults(flag)
     }
 
@@ -47,6 +50,19 @@ export class InlineMultController {
     }
 
     sessionCompleted() {
-        return this.#sessionEnded
+        return this.#sessionCompleted
+    }
+
+    endPracticeSession() {
+        this.view.reset()
+        this.model.reset()
+        this.#sessionCompleted = true
+    }
+
+    newSession() {
+        this.model.newSession(this.tables, getSettings())
+        this.view.newSession()
+        this.#sessionCompleted = false
+        this.play()
     }
 }

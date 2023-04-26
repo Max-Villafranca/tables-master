@@ -1,5 +1,3 @@
-const restartPracticeButton = document.querySelector('#restartPractice')
-
 export class InlineMultView {
     #expectingInput = false
 
@@ -14,18 +12,21 @@ export class InlineMultView {
         this.displayFactorA = document.querySelector('#displayFactorA')
         this.displayFactorB = document.querySelector('#displayFactorB')
         this.displayProduct = document.querySelector('#displayProduct')
+        this.restartPracticeButton = document.querySelector('#restartPractice')
         this.progressBar = document.querySelector('.progress')
-        this.results.classList.add('invisible')
-        this.display.classList.remove('invisible')
-        this.keyboard.classList.remove('invisible')
-        this.progressBar.setAttribute('style','width:0%')
+        this.newSession()
 
         document.querySelectorAll('.numberKeys').forEach(button => {
             button.addEventListener('click', (e) => { this.appendNumber(e) })
         })
         document.querySelector('#backspace').addEventListener('click', (e) => { this.backspace(e) })
-        
+
         document.querySelector('#enter').addEventListener('click', (e) => { this.enterAnswer() })
+
+        this.restartPracticeButton.addEventListener('click', () => {
+            this.controller.endPracticeSession()
+            controller.newSession()
+        })
     }
 
     appendNumber(e) {
@@ -50,7 +51,7 @@ export class InlineMultView {
             this.display.classList.add('incorrectAnswer')
         }
         this.updateProgressBar()
-        setTimeout( () => {
+        setTimeout(() => {
             this.display.classList.remove('correctAnswer');
             this.display.classList.remove('incorrectAnswer');
             this.controller.play()
@@ -59,12 +60,11 @@ export class InlineMultView {
 
     updateProgressBar() {
         let progress = this.controller.progressPercentage
-        this.progressBar.setAttribute('style',`width:${progress}%`)
+        this.progressBar.setAttribute('style', `width:${progress}%`)
     }
 
     displayResults(showRestartButton = true) {
         this.#expectingInput = false
-        localStorage.clear()
         let message
         let playlistProgress = this.controller.getPlaylistProgress()
         const score = Math.round(this.controller.getCorrectAnswers() / playlistProgress * 1000) / 10
@@ -77,18 +77,22 @@ export class InlineMultView {
         this.score.textContent = `${score}% ${message}`
         this.display.classList.add('invisible')
         this.keyboard.classList.add('invisible')
-        restartPracticeButton.classList.remove('invisible')
-        if (!showRestartButton) restartPracticeButton.classList.add('invisible')
+        if (!showRestartButton) this.restartPracticeButton.setAttribute('style', 'display:none')
         this.results.classList.remove('invisible')
     }
 
     set expectingInput(flag) {
         this.#expectingInput = flag
     }
-}
 
-restartPracticeButton.addEventListener('click', () => {
-    endpracticesession()
-    multiplications = new InlineMultController(multiplicationTables, getSettings())
-    multiplications.play()
-})
+    reset() {
+        this.#expectingInput = false
+    }
+
+    newSession() {
+        this.display.classList.remove('invisible')
+        this.keyboard.classList.remove('invisible')
+        this.results.classList.add('invisible')
+        this.progressBar.setAttribute('style', 'width:0%')
+    }
+}

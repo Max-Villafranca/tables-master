@@ -1,4 +1,4 @@
-import {InlineMultController} from './controllers.js'
+import { InlineMultController } from './controllers.js'
 
 //functions
 function highlightColumn(e) {
@@ -25,35 +25,35 @@ function highlightAllCells(e) {
 function selectColumn(e) {
     let column = e.target.dataset.linkFactors
     let columnData = parseInt(column.substring(7))
-    let isSelected = toggleSelectColumn[columnData-1]
+    let isSelected = toggleSelectColumn[columnData - 1]
 
     document.querySelectorAll(`.${column}:not(th)`).forEach((x, i) => {
         if (isSelected) {
-            multiplicationTables[i+1][parseInt(x.textContent)-1] = false
+            multiplicationTables[i + 1][parseInt(x.textContent) - 1] = false
             x.classList.remove('multiplicationSelect')
         } else {
-            multiplicationTables[i+1][parseInt(x.textContent)-1] = true
+            multiplicationTables[i + 1][parseInt(x.textContent) - 1] = true
             x.classList.add('multiplicationSelect')
         }
     })
-    toggleSelectColumn[parseInt(column.substring(7))-1] = !isSelected
+    toggleSelectColumn[parseInt(column.substring(7)) - 1] = !isSelected
 }
 
 function selectRow(e) {
     let row = e.target.parentElement
     let rowData = parseInt(row.children[1].dataset.table)
-    let isSelected = toggleSelectRow[rowData-1]
+    let isSelected = toggleSelectRow[rowData - 1]
 
-    row.querySelectorAll(':not(th)').forEach (i => {
+    row.querySelectorAll(':not(th)').forEach(i => {
         if (isSelected) {
-            multiplicationTables[rowData][i.textContent-1] = false
+            multiplicationTables[rowData][i.textContent - 1] = false
             i.classList.remove('multiplicationSelect')
         } else {
-            multiplicationTables[rowData][i.textContent-1] = true
+            multiplicationTables[rowData][i.textContent - 1] = true
             i.classList.add('multiplicationSelect')
         }
     })
-    toggleSelectRow[rowData-1] = !isSelected
+    toggleSelectRow[rowData - 1] = !isSelected
 }
 
 function selectSingleCell(e) {
@@ -66,15 +66,15 @@ function selectSingleCell(e) {
 function selectAllCells() {
     singleCell.forEach(i => {
         if (toggleSelectAllCells) {
-            multiplicationTables[i.dataset.table][parseInt(i.textContent)-1] = false
+            multiplicationTables[i.dataset.table][parseInt(i.textContent) - 1] = false
             i.classList.remove('multiplicationSelect')
         } else {
-            multiplicationTables[i.dataset.table][parseInt(i.textContent)-1] = true
+            multiplicationTables[i.dataset.table][parseInt(i.textContent) - 1] = true
             i.classList.add('multiplicationSelect')
         }
     })
-    toggleSelectColumn.forEach((e,i) => toggleSelectColumn[i] = !toggleSelectAllCells)
-    toggleSelectRow.forEach((e,i) => toggleSelectRow[i] = !toggleSelectAllCells)
+    toggleSelectColumn.forEach((e, i) => toggleSelectColumn[i] = !toggleSelectAllCells)
+    toggleSelectRow.forEach((e, i) => toggleSelectRow[i] = !toggleSelectAllCells)
     toggleSelectAllCells = !toggleSelectAllCells
 }
 
@@ -86,10 +86,10 @@ function getSettings() {
     }
 }
 
-function enableKeypad(){
-    let validKey = ['1','2','3','4','5','6','7','8','9','0','Enter','Backspace']
+function enableKeypad() {
+    let validKey = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 'Enter', 'Backspace']
     document.addEventListener('keydown', e => {
-        if (!validKey.includes(e.key) || !modalWrapper.classList.contains('invisible') || !multiplications) return
+        if (!validKey.includes(e.key) || !!practicePanel.classList.contains('invisible')) return
         else if (e.key === 'Enter') multiplications.checkAnswer()
         else if (e.key === 'Backspace') multiplications.backspace()
         else multiplications.appendNumber(e)
@@ -101,23 +101,23 @@ function enableHighlightTables() {
         i.addEventListener('mouseover', highlightColumn)
         i.addEventListener('mouseleave', highlightColumn)
     });
-    
+
     rowHeads.forEach(i => {
         i.addEventListener('mouseover', highlightRow);
         i.addEventListener('mouseleave', highlightRow)
     });
-    
+
     singleCell.forEach(i => {
         i.addEventListener('mouseover', highlightSingleCell)
         i.addEventListener('mouseleave', highlightSingleCell)
     });
-    
+
     allCells.addEventListener('mouseover', highlightAllCells)
     allCells.addEventListener('mouseleave', highlightAllCells)
-    
+
     document.querySelector('.tablesEditor').addEventListener('touchstart', e => {
         if (e.cancelable) e.preventDefault()
-    },{passive:false})
+    }, { passive: false })
 
     document.querySelector('.tablesEditor').addEventListener('touchend', e => {
         if (e.cancelable) e.preventDefault()
@@ -126,16 +126,16 @@ function enableHighlightTables() {
 
 function enableSelectTables() {
     columnHeads.forEach(i => { i.addEventListener('click', selectColumn) })
-    columnHeads.forEach(i => { i.addEventListener('touchstart', selectColumn,{passive: true}) })
-    
+    columnHeads.forEach(i => { i.addEventListener('touchstart', selectColumn, { passive: true }) })
+
     rowHeads.forEach(i => { i.addEventListener('click', selectRow) })
-    rowHeads.forEach(i => { i.addEventListener('touchstart', selectRow,{passive: true}) })
-    
+    rowHeads.forEach(i => { i.addEventListener('touchstart', selectRow, { passive: true }) })
+
     singleCell.forEach(i => { i.addEventListener('click', selectSingleCell) })
-    singleCell.forEach(i => { i.addEventListener('touchstart', selectSingleCell,{passive: true}) })
-    
+    singleCell.forEach(i => { i.addEventListener('touchstart', selectSingleCell, { passive: true }) })
+
     allCells.addEventListener('click', selectAllCells)
-    allCells.addEventListener('touchstart', selectAllCells,{passive: true})
+    allCells.addEventListener('touchstart', selectAllCells, { passive: true })
 }
 
 function showEditPanel() {
@@ -146,11 +146,6 @@ function showEditPanel() {
 function showPracticePanel() {
     editPanel.classList.add('invisible')
     practicePanel.classList.remove('invisible')
-}
-
-function endpracticesession() {
-    multiplications = null
-    localStorage.clear()
 }
 
 // variables
@@ -164,8 +159,8 @@ const modalWrapper = document.querySelector('.modal-wrapper')
 let randomFactors = document.querySelector('[data-random-factors]')
 let swapFactors = document.querySelector('[data-swap-factors]')
 let playlistLength = document.querySelector('[data-playlist-length]')
-let toggleSelectColumn = [true,true,true,true,true,true,true,true,true,true]
-let toggleSelectRow = [true,true,true,true,true,true,true,true,true,true]
+let toggleSelectColumn = [true, true, true, true, true, true, true, true, true, true]
+let toggleSelectRow = [true, true, true, true, true, true, true, true, true, true]
 let toggleSelectAllCells = false
 let multiplicationTables = {
     1: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -187,16 +182,15 @@ let multiplications = new InlineMultController(multiplicationTables, getSettings
 document.querySelector('.practice').addEventListener('click', () => {
     if (!practicePanel.classList.contains('invisible')) return
     if (multiplicationTables.length === 0 || getSettings().playlistLength == 0) return
-    multiplications = new InlineMultController(multiplicationTables, getSettings())
-    multiplications.play()
+    multiplications.newSession(multiplicationTables, getSettings())
     showPracticePanel()
 })
 
 document.querySelector('.edit').addEventListener('click', () => {
-    if (multiplications === null || !editPanel.classList.contains('invisible')) return
+    if (!editPanel.classList.contains('invisible')) return
     if (multiplications.sessionCompleted()) { showEditPanel(); return }
-    if (multiplications.getPlaylistProgress === 0) {
-        endpracticesession()
+    if (multiplications.getPlaylistProgress() === 0) {
+        multiplications.endPracticeSession()
         showEditPanel()
     } else {
         modalWrapper.classList.remove('invisible')
@@ -206,9 +200,9 @@ document.querySelector('.edit').addEventListener('click', () => {
 document.querySelector('#yes-endPractice').addEventListener('click', () => {
     modalWrapper.classList.add('invisible')
     multiplications.displayResults(false)
-    endpracticesession()
+    multiplications.endPracticeSession()
     setTimeout(() => {
-        showEditPanel()
+        if (multiplications.sessionCompleted()) showEditPanel()
     }, 3000);
 })
 
@@ -231,3 +225,4 @@ enableKeypad()
 enableHighlightTables()
 enableSelectTables()
 
+export { getSettings }
