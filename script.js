@@ -78,12 +78,44 @@ function selectAllCells() {
     toggleSelectAllCells = !toggleSelectAllCells
 }
 
+function sortTables(tables) {
+    let sortedTables = { tables: [] }
+    let factorA = Object.keys(tables)
+
+    for (let i = 0; i < factorA.length; i++) {
+        let tempArray = []
+        for (let j = 0; j < tables[factorA[i]].length; j++) {
+            let factorB = tables[factorA[i]]
+            if (factorB[j]) tempArray.push(j + 1)
+        }
+        if (tempArray.length > 0) {
+            sortedTables.tables.push(i + 1)
+            sortedTables[i + 1] = tempArray
+        }
+    }
+    return sortedTables
+}
+
 function getSettings() {
     return {
         randomFactors: document.querySelector('[data-random-factors]').checked,
         swapFactors: document.querySelector('[data-swap-factors]').checked,
         playlistLength: parseInt(document.querySelector('[data-playlist-length]').value),
     }
+}
+
+function getTables() {
+    let sortedTables
+    try { sortedTables = sortTables(multiplicationTables) }
+    catch (error) {
+        console.log('Invalid tables selected\n', error.message)
+        return false
+    }
+    if (sortedTables.tables.length === 0) {
+        console.log('No multiplications were selected')
+        return false
+    }
+    return sortedTables
 }
 
 function enableKeypad() {
@@ -176,13 +208,13 @@ let multiplicationTables = {
 }
 
 selectAllCells()
-let multiplications = new InlineMultController(multiplicationTables, getSettings())
+let multiplications = new InlineMultController()
 
 
 document.querySelector('.practice').addEventListener('click', () => {
     if (!practicePanel.classList.contains('invisible')) return
-    if (multiplicationTables.length === 0 || getSettings().playlistLength == 0) return
-    multiplications.newSession(multiplicationTables, getSettings())
+    if (getSettings().playlistLength < 1 || isNaN(getSettings().playlistLength)) return
+    if (!multiplications.newSession()) return
     showPracticePanel()
 })
 
@@ -225,4 +257,4 @@ enableKeypad()
 enableHighlightTables()
 enableSelectTables()
 
-export { getSettings }
+export { getSettings, getTables }

@@ -1,20 +1,20 @@
 import { InlineMultView } from "./views.js"
 import { InlineMultModel } from "./models.js"
-import { getSettings } from "./script.js"
+import { getSettings, getTables } from "./script.js"
 
 
 export class InlineMultController {
     #sessionCompleted = false
 
-    constructor(tables, settings) {
-        this.tables = tables
-        this.settings = settings
+    constructor() {
+        this.tables = getTables()
+        this.settings = getSettings()
         this.view = new InlineMultView(this)
-        this.model = new InlineMultModel(this, tables, settings)
+        this.model = new InlineMultModel(this, this.tables, this.settings)
     }
 
     play() {
-        if (this.getPlaylistProgress() >= this.model.settings.playlistLength) {
+        if (this.getPlaylistProgress() >= this.model.playlistLength) {
             this.view.displayResults()
             this.endPracticeSession()
         }
@@ -34,7 +34,7 @@ export class InlineMultController {
     }
 
     get progressPercentage() {
-        return 100 / this.model.settings.playlistLength * this.getPlaylistProgress()
+        return 100 / this.model.playlistLength * this.getPlaylistProgress()
     }
 
     get startTime() {
@@ -60,9 +60,12 @@ export class InlineMultController {
     }
 
     newSession() {
-        this.model.newSession(this.tables, getSettings())
+        let tables =  getTables()
+        if (tables === false) return false
+        this.model.newSession(tables, getSettings())
         this.view.newSession()
         this.#sessionCompleted = false
         this.play()
+        return true
     }
 }
