@@ -13,6 +13,9 @@ in a clean, organized and professional manner.
 - It has a selection menu with a cool interactive table.
 - It will run a practice session based on the multiplications and settings selected.
 
-## To Do (to release V1.1):
-- Add helping hand on practice session. (currently only indicates if answered correct or wrong)
-- Improve results visuals, it looks too plain as it is.
+## To Do (release V1.2):
+- [ ] Add long multiplication practice session.
+
+## To Do (release V1.3):
+- [ ] Add authentication
+- [ ] Add a database
