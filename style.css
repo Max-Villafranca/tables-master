@@ -15,7 +15,8 @@
     --headBackColor: hsla(223, 37%, 63%, 0.75);
     --cellBackColor: hsla(225, 24%, 60%, 0.5);
     --cellHighlight: hsla(255, 24%, 50%, 0.75);
-    background-color: lightgray;
+    --bodyBackColor: lightgray;
+    background-color: var(--bodyBackColor)
 }
 
 body{
@@ -47,16 +48,51 @@ body{
 
 
 /* editPanel */
-.editPanel{
+.editPanel {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 2rem 1rem 0;
+}
+
+.sessionType {
+    display: flex;
+    flex-direction: column;
+    margin-right: 2rem;
+    margin-bottom: 2rem;
+    width: 4.5rem;
+    height: 8rem;
+    justify-content: center;
+    border-left: 3px solid gray;
+}
+
+.sessionButton:hover {
+    color: red;
+}
+
+.sessionButton {
+    font-size: inherit;
+    padding: .5rem;
+    background-color: inherit;
+    margin-left: -3px;
+    border: none;
+}
+
+.activeType {
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    border: 3px solid gray;
+    border-left: 4px solid var(--bodyBackColor);
+}
+
+.parametersEditor {
     display: flex;
     flex-direction: column;
     width: max-content;
     margin: 0 auto;
-    padding: 2rem 1rem 0;
     gap: 1rem;
 }
 
-.practiceSettings{
+.settingsEditor{
     width: max-content;
 }
 
@@ -124,6 +160,16 @@ input::-webkit-inner-spin-button {
     box-shadow: 0rem 0rem 1rem .2rem var(--cellHighlight);
     outline: none;
     border: solid 1px red;
+}
+
+.disabled-checkbox {
+    color: gray;
+}
+
+.checkbox-container.checkbox-container input:disabled+::before {
+    color: dimgray;
+    background-color: gray;
+    border-color: gray;
 }
 
 .tablesEditor{

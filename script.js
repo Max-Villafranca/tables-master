@@ -180,6 +180,23 @@ function showPracticePanel() {
     practicePanel.classList.remove('invisible')
 }
 
+function activateInline() {
+    longButton.classList.remove('activeType')
+    inLineButton.classList.add('activeType')
+    document.querySelector('label[for=randomFactors]').classList.remove('disabled-checkbox')
+    document.querySelector('label[for=swapFactors]').classList.remove('disabled-checkbox')
+    document.querySelector('#randomFactors').disabled = false
+    document.querySelector('#swapFactors').disabled =  false
+}
+function activateLong() {
+    inLineButton.classList.remove('activeType')
+    longButton.classList.add('activeType')
+    document.querySelector('label[for=randomFactors]').classList.add('disabled-checkbox')
+    document.querySelector('label[for=swapFactors]').classList.add('disabled-checkbox')
+    document.querySelector('#randomFactors').disabled = true
+    document.querySelector('#swapFactors').disabled =  true
+}
+
 // variables
 const columnHeads = document.querySelectorAll('.tablesEditor tr:first-child>th:not(#allTables)')
 const rowHeads = document.querySelectorAll('.tablesEditor :not(:first-child) th')
@@ -187,6 +204,8 @@ const singleCell = document.querySelectorAll('.tablesEditor td')
 const allCells = document.querySelector('#allTables')
 const editPanel = document.querySelector('.editPanel')
 const practicePanel = document.querySelector('.practicePanel')
+const inLineButton = document.querySelector('#in-lineButton')
+const longButton = document.querySelector('#longButton')
 const modalWrapper = document.querySelector('.modal-wrapper')
 let randomFactors = document.querySelector('[data-random-factors]')
 let swapFactors = document.querySelector('[data-swap-factors]')
@@ -228,6 +247,10 @@ document.querySelector('.edit').addEventListener('click', () => {
         modalWrapper.classList.remove('invisible')
     }
 })
+
+inLineButton.addEventListener('click', () => activateInline())
+    
+longButton.addEventListener('click', () => activateLong())
 
 document.querySelector('#yes-endPractice').addEventListener('click', () => {
     modalWrapper.classList.add('invisible')
