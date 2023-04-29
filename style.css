@@ -15,7 +15,8 @@
     --headBackColor: hsla(223, 37%, 63%, 0.75);
     --cellBackColor: hsla(225, 24%, 60%, 0.5);
     --cellHighlight: hsla(255, 24%, 50%, 0.75);
-    background-color: lightgray;
+    --bodyBackColor: lightgray;
+    background-color: var(--bodyBackColor)
 }
 
 body{
@@ -47,16 +48,50 @@ body{
 
 
 /* editPanel */
-.editPanel{
+.editPanel {
+    display: flex;
+    padding: 2rem 1rem 0;
+}
+
+.sessionType {
+    display: flex;
+    flex-direction: column;
+    height: 8rem;
+    justify-content: center;
+    border-left: 3px solid gray;
+}
+
+.sessionButton:hover {
+    color: red;
+}
+
+.sessionButton {
+    font-size: inherit;
+    padding: .5rem;
+    background-color: inherit;
+    border: 3px solid gray;
+    margin-left: -4px;
+}
+
+.activeType {
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    border-left:6px solid var(--bodyBackColor);
+}
+
+.inactiveType {
+    border: none;
+}
+
+.parametersEditor {
     display: flex;
     flex-direction: column;
     width: max-content;
     margin: 0 auto;
-    padding: 2rem 1rem 0;
     gap: 1rem;
 }
 
-.practiceSettings{
+.settingsEditor{
     width: max-content;
 }
 
